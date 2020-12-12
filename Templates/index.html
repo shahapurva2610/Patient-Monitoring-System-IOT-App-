@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Patient Monitoring System</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<link rel="stylesheet" href=" https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href=" https://fonts.googleapis.com/css?family=Lora">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.js"></script>
+		<style>
+			table {
+				font-family: arial, sans-serif;
+				border-collapse: collapse;
+				width: 100%;
+			}
+
+			td, th {
+				border: 1px solid #dddddd;
+				text-align: left;
+				padding: 8px;
+			}
+
+			tr:nth-child(even) {
+				background-color: #dddddd;
+			}
+			canvas { 
+				background-color : #eee;
+			}
+		</style>
+	</head>
+	<body onload='my_function({{data|tojson}},{{d11}},{{d12}},{{d21}},{{d22}},{{d31}},{{d32}})'>
+		<div class="container">
+			<h3> Patient Monitoring System </h3>
+			<hr style="color: #0F0F0F">
+			<h4 style="color: #0EDEDE"> Monitoring Data:</h4>
+			<div class="row my-3">
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-body">
+							<canvas id="Room1 (BME)" width="100"></canvas>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-body">
+							<canvas id="Room2 (BME)" width="100"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-body">
+							<canvas id="Room3 (Pulse Sensor)" width="100"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!--<canvas id="chartJSContainer" width="400" height="300"></canvas>-->
+			<div style="height:400px;overflow:auto;">
+			<table>
+				<thead>
+				<tr>
+					<th> Time Stamp</th>
+					<th> Room Number</th>
+					<th> Sensor Type</th>
+					<th> Sensor Value </th>
+				</tr>
+				</thead>
+				<tbody>
+					{% for row in data %}
+					<tr>
+						<td> {{row.0}} </td>
+						<td> {{row.1}} </td>
+						<td> {{row.2}} </td>
+						<td> {{row.3}} </td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			</div>
+			<!--{{data}}-->
+			<br>
+			<br>
+			<hr>
+		</div>
+	</body>
+	<script>
+		function my_function(data,d11,d12,d21,d22,d31,d32) {
+		var colors = ['#','#','#','#EEEEEE','#',"rgba(75,192,192,1)"];
+			
+			var d11x = new Array();
+		var i;
+		for (i=0; i<d11.length; i++)
+		{
+			d11x[i] = d11[i]; 
+		}
+
+		var d12x = new Array();
+		for (i=0; i<d12.length; i++)
+		{
+			d12x[i] = d12[i]; 
+		}
+
+		var d21x = new Array();
+		for (i=0; i<d21.length; i++)
+		{
+			d21x[i] = d21[i]; 
+		}
+
+		var d22x = new Array();
+		for (i=0; i<d22.length; i++)
+		{	
+			d22x[i] = d22[i]; 
+		}
+
+		var d31x = new Array();
+		for (i=0; i<d31.length; i++)
+		{
+			d31x[i] = d31[i]; 
+		}	
+
+
+		var d32x = new Array();
+		for (i=0; i<d32.length; i++)
+		{
+			d32x[i] = d32[i]; 
+		}
+
+		var options = {
+		type: 'line',
+		data: {
+			//labels: ultrasonic_time_array,
+			labels: d11x,
+
+			datasets: [
+			{
+				label: 'Room1 (BME)',
+				data: d12x,
+				backgroundColor: "rgba(75,192,192,1)",
+				borderColor: "rgba(75,192,192,0.4)",
+				borderWidth: 4,
+				pointBackgroundColor: "rgba(75,192,192,1)"
+			}
+			]
+			},
+		options: {
+			scales: {
+				yAxes: [{
+				ticks: {
+					reverse: false
+				}
+				}]
+			}
+		}
+		};
+
+		var options2 = {
+		type: 'line',
+		data: {
+			//labels: ph_time_array,
+			labels: d21x,
+			datasets: [
+			{
+				label: 'Room2 (BME)',
+				//data: [7, 11, 5, 8, 3, 7],
+				data: d22x,
+				backgroundColor:"rgba(75,192,192,1)",
+				borderColor: "rgba(75,192,192,0.4)",
+				borderWidth: 4,
+				pointBackgroundColor: "rgba(75,192,192,1)"
+			}
+			]
+			},
+		options: {
+			scales: {
+				yAxes: [{
+				ticks: {
+					reverse: false
+				}
+				}]
+			}
+		}
+		};
+
+		var options3 = {
+		type: 'line',
+		data: {
+			//labels: ph_time_array,
+			labels: d31x,
+			datasets: [
+			{
+				label: 'Room3 (Pulse Sensor)',
+				//data: [7, 11, 5, 8, 3, 7],
+				data: d32x,
+				backgroundColor: "rgba(75,192,192,1)",
+				borderColor: "rgba(75,192,192,0.4)",
+				borderWidth: 4,
+				pointBackgroundColor: "rgba(75,192,192,)"
+			}
+			]
+			},
+		options: {
+			scales: {
+				yAxes: [{
+				ticks: {
+					reverse: false
+				}
+				}]
+			}
+		}
+		};
+
+		var ctx = document.getElementById('Room1 (BME)').getContext('2d');
+		new Chart(ctx, options);
+		var ctx2 = document.getElementById('Room2 (BME)').getContext('2d');
+		new Chart(ctx2, options2);
+		var ctx3 = document.getElementById('Room3 (Pulse Sensor)').getContext('2d');
+		new Chart(ctx3, options3);
+		}
+	</script>
+
+</html>
