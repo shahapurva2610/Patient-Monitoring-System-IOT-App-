@@ -45,18 +45,6 @@ def index():
 				d32x.append(sensor[3])
 
 
-		print(cnt1)
-		print(cnt2)
-		print(cnt3)
-
-		print(d11x)
-		print(d21x)
-		print(d31x)
-
-		print(d12x)
-		print(d22x)
-		print(d32x)
-
 		return render_template('index.html', data=sensorDetails, d11=d11x, d12=d12x,d21=d21x,d22=d22x,d31=d31x,d32=d32x)
 
 if __name__ == '__main__':
